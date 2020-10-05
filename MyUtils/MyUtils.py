@@ -52,6 +52,6 @@ def join_features_labels(X0,X1):
     return pd.concat([XY0,XY1],axis=0,ignore_index=True)
 
 def jitter(X,sigma=0.2):
-    random_sign = (-1)**np.random.randint(1,3,*X.shape)
-    return X + np.random.normal(0,sigma,*X.shape)*random_sign 
+    random_sign = (-1.)**np.random.randint(1,high=3,size=X.shape)
+    return X + np.random.normal(0,sigma,size=X.shape)*random_sign 
 
