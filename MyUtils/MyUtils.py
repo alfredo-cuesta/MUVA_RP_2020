@@ -55,3 +55,21 @@ def jitter(X,sigma=0.2):
     random_sign = (-1.)**np.random.randint(1,high=3,size=X.shape)
     return X + np.random.normal(0,sigma,size=X.shape)*random_sign 
 
+def single_stratified_split(X,Y,test_size=.2, random_state=1234):
+    # X is the dataframe with examples (rows) and attributes (columns)
+    # Y is the dataframe with labels
+    # test_size is the percentage of X separated; default is 0.2
+    # random_state is a seed for pseudorandom generation
+    # returns 
+    #   X_train, Y_train = dataframes of (1-test_size)% of the X and Y
+    #   X_test, Y_test = dataframes of test_size% of the X and Y
+    from sklearn.model_selection import StratifiedShuffleSplit
+    splitter = StratifiedShuffleSplit(n_splits=1, test_size=test_size, random_state=random_state)
+    split_ix = splitter.split(X,Y)
+    for train_ix, test_ix in split_ix:
+        X_train = X.loc[train_ix].reset_index(drop=True)
+        Y_train = Y.loc[train_ix].reset_index(drop=True)
+        X_test  = X.loc[test_ix].reset_index(drop=True)
+        Y_test  = Y.loc[test_ix].reset_index(drop=True)
+    return X_train, Y_train, X_test, Y_test
+
